@@ -3,17 +3,7 @@ const bot = new Discord.Client();
 const prefix = "*";
 const math = require('mathjs');
 const r = "RANDOM";
-require(`dotenv/config`);
-const settings = (`./settings.json`);
-const http = require(`http`);
-const port = process.env.PORT || 3000;
-//server
-http.createServer().listen(port);
 
-// store data //
-const prefix = settings.prefix;
-const token = process.env.TOKEN;
-const owner = settings.owner;
 
 bot.on('ready', () => {
     console.log(`${bot.user.tag} read!`)
@@ -29,10 +19,6 @@ bot.on('message', message => {
     let args = msg.content.slice(prefix.length).split(/ +/);
     let command = args.shift().toLowerCase();
     let cmd = command;
-    
-    bot.on(`error` , err => {
-        console.log(err);
-    });
  
     if (command === 'help') {
         const embed = new Discord.MessageEmbed()
@@ -117,3 +103,4 @@ if (command === 'dev') {
 
 );
  
+bot.login("NzExMjYwOTY1ODk5MDc1NjM1.XtRK6w.EDq6o6qUERva-jG-23BW7Qe8oMc");
