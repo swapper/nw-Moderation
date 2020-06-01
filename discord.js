@@ -1,12 +1,14 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+var moment = require(`moment`);
 const prefix = "*";
 const math = require('mathjs');
 const r = "RANDOM";
 
 
+
 bot.on('ready', () => {
-    console.log(`${bot.user.tag} read!`)
+    console.log(`${bot.user.tag} logged de fock in!`)
     bot.user.setStatus("invisible")
     bot.user.setActivity('[*] THE SERVER', ({type: "WATCHING"}))
 
@@ -19,7 +21,25 @@ bot.on('message', message => {
     let args = msg.content.slice(prefix.length).split(/ +/);
     let command = args.shift().toLowerCase();
     let cmd = command;
+    
+if (command === `user`) {
+    var user = message.mentions.users.first() || message.author;
+
+    const embed = new Discord.MessageEmbed()
+    .setColor(`RANDOM`)
+    .addField(`Username:`, `${message.author.tag}`)
+    .addField(`Status:`, user.presence.status)
+    .addField(`Created At:`, `${message.author.createdAt}`, true)
+    .addField(`ID:`, `${message.author.id}`, true)
+    .setTimestamp()
+    
+    
+    msg.channel.send(embed);
+};
  
+    
+
+
     if (command === 'help') {
         const embed = new Discord.MessageEmbed()
         .setTitle('Commands')
