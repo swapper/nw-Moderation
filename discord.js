@@ -4,6 +4,10 @@ var moment = require(`moment`);
 const prefix = "*";
 const math = require('mathjs');
 const r = "RANDOM";
+const map = require(`map`)
+
+
+
 
 
 
@@ -21,23 +25,49 @@ bot.on('message', message => {
     let args = msg.content.slice(prefix.length).split(/ +/);
     let command = args.shift().toLowerCase();
     let cmd = command;
+
+     
     
 if (command === `user`) {
-    var user = message.mentions.users.first() || message.author;
+    let user = message.mentions.users.first() || message.author; // You can do it by mentioning the user, or not.
+
+    function game() {
+        let game;
+        if (user.presence.activities.length >= 1) game = `${user.presence.activities[0].type} ${user.presence.activities[0].name}`;
+        else if (user.presence.activities.length < 1) game = "Nothing"; // This will check if the user doesn't playing anything.
+        return game; // Return the result.
+    }
+
+    let x = Date.now() - user.createdAt; // Since the user created their account.
+    let y = Date.now() - message.guild.members.cache.get(user.id).joinedAt; // Since the user joined the server.
+    let created = Math.floor(x / 86400000); // 5 digits-zero.
+    let joined = Math.floor(y / 86400000);
+
+    const member = message.guild.member(user);
+    let nickname = member.nickname !== undefined && member.nickname !== null ? member.nickname : "None"; // Nickname
+    let createdate = moment.utc(user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss"); // User Created Date
+    let joindate = moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss"); // User Joined the Server Date
+    let status = user.presence.status; // DND, IDLE, OFFLINE, ONLINE
+    let avatar = user.avatarURL({size: 2048}); // Use 2048 for high quality avatar.
 
     const embed = new Discord.MessageEmbed()
-    .setColor(`RANDOM`)
-    .addField(`Username:`, `${message.author.tag}`)
-    .addField(`Status:`, user.presence.status)
-    .addField(`Created At:`, `${message.author.createdAt}`, true)
-    .addField(`ID:`, `${message.author.id}`, true)
+    .setAuthor(user.username) 
+    .setThumbnail(avatar)
+    .setDescription("This is the user's info!")
+    .setColor("RANDOM")
+    .addField("Full Username:", `${user.username}#${user.discriminator}`)
+    .addField("Status:", user.presence.status)
+    .addField("ID:", user.id)
+    .addField("Created At:", moment.utc(user.createdAt).format("dddd, MMMM Do YYYY, HH:mm"))
+    .addField("Joined At:", moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm"))
+    .addField("Playing:", game(), true)
     .setTimestamp()
     
     
     msg.channel.send(embed);
 };
- 
-    
+
+
 
 
     if (command === 'help') {
@@ -45,8 +75,8 @@ if (command === `user`) {
         .setTitle('Commands')
         .addField('General', `${prefix}help - Shows this message.`)
         .addField('Info', `${prefix}dev - Shows info on who made this bot.`)
-        .addField('Commands', `${prefix}kick - removes user from server (mut provide reason). \n${prefix}ban - bans user from server (must provide reason) \n${prefix}purge - clears messages. (1-100 only)`)
-        .addField('Userinfo', `${prefix}user - this command displays your user info`)
+        .addField('Commands', `${prefix}kick - Removes user from server (must provide reason). \n${prefix}ban - Bans user from server (must provide reason) \n${prefix}purge - clears messages. (1-100 only)`)
+        .addField('Userinfo', `${prefix}user - This command displays your user info`)
         .setColor(0xff0000);
         msg.channel.send(embed);
     }
