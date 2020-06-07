@@ -10,7 +10,7 @@ const fs = require("fs");
 bot.on('ready', () => {
     console.log(`Logged in as Moderation Bot!`)
     bot.user.setStatus("invisible")
-    bot.user.setActivity(`@JRZ on IG`, ({type: "WATCHING"}))
+    bot.user.setActivity(`[*] @JRZ on IG`, ({type: "WATCHING"}))
 
 
 
