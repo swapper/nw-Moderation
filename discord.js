@@ -147,4 +147,4 @@ if (command === `user`) {
 
 );
  
-bot.login("NzExMjYwOTY1ODk5MDc1NjM1.XtRK6w.EDq6o6qUERva-jG-23BW7Qe8oMc");
+bot.login("");
